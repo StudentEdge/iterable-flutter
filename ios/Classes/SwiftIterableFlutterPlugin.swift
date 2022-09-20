@@ -70,10 +70,18 @@ public class SwiftIterableFlutterPlugin: NSObject, FlutterPlugin, UNUserNotifica
         config.pushIntegrationName = pushIntegrationName
         config.autoPushRegistration = true
         config.customActionDelegate = self
+        config.urlDelegate = self
         
         IterableAPI.initialize(apiKey: apiKey, config: config)
     }
     
+    // Iterable URL delegate. It will be called when you receive 
+    // an `openUrl` event from push notification.
+    public func handle(iterableURL url: URL, inContext context: IterableActionContext) -> Bool {
+        notifyPushNotificationOpened()
+        return true;
+    }
+
     private func getPropertiesFromArguments(_ callArguments: Any?) -> [String: Any] {
         if let arguments = callArguments as? [String: Any] {
             return arguments;
